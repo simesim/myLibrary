@@ -21,5 +21,5 @@
 // ============================================================
 
 const CONFIG = {
-  CSV_URL: "ВСТАВЬ_СЮДА_ССЫЛКУ_НА_CSV",
+  CSV_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTFk7Mg6ldUCBFEItZU2ILe5VtzTXHFHgpy6AynS3i3c9lc-PdmN7364IkZd8x-jdrofPTsDPGXZMsz/pub?gid=1508254424&single=true&output=csv",
 };
