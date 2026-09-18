@@ -33,7 +33,6 @@ const els = {
     modalRating: document.getElementById("modalRating"),
 };
 
-// CSV PARSING 
 function parseCSV(text) {
     const rows = [];
     let row = [];
@@ -53,7 +52,7 @@ function parseCSV(text) {
             if (c === '"') { inQuotes = true; } else if (c === ',') {
                 row.push(field);
                 field = "";
-            } else if (c === '\r') { /* skip */ } else if (c === '\n') {
+            } else if (c === '\r') {} else if (c === '\n') {
                 row.push(field);
                 rows.push(row);
                 row = [];
@@ -118,7 +117,6 @@ function normalizeStatus(raw) {
     return s || "хочу прочитать";
 }
 
-// DATA LOAD 
 async function loadBooks() {
     try {
         if (!CONFIG.CSV_URL || CONFIG.CSV_URL.includes("ВСТАВЬ_СЮДА")) {
@@ -158,7 +156,6 @@ function populateGenreOptions() {
         genres.map(g => `<option value="${escapeAttr(g)}">${escapeHtml(g)}</option>`).join("");
 }
 
-// FILTER / SORT
 function applyFiltersAndRender() {
     const q = els.searchInput.value.trim().toLowerCase();
     const genre = els.genreSelect.value;
@@ -195,7 +192,6 @@ function applyFiltersAndRender() {
     render();
 }
 
-// RENDER
 function hashStr(str) {
     let h = 0;
     for (let i = 0; i < str.length; i++) { h = (h * 31 + str.charCodeAt(i)) >>> 0; }
@@ -227,8 +223,6 @@ function render() {
     els.errorState.hidden = true;
 
     els.bookCount.textContent = pluralizeBooks(FILTERED_BOOKS.length) + (FILTERED_BOOKS.length !== ALL_BOOKS.length ? ` из ${ALL_BOOKS.length}` : "");
-
-    // group by genre, preserve order of first appearance within sorted list,
 
     const genreActive = els.genreSelect.value !== "all";
     const groups = new Map();
@@ -267,99 +261,98 @@ function render() {
             spine.setAttribute("aria-label", `${book.title}, ${book.author}`);
             spine.dataset.id = book.id;
 
-            const statusClass = book.status === "прочитано" ? "status-read" :
-                book.status === "в процессе" ? "status-progress" : "status-want";
-
             spine.innerHTML = `
-        <span class="spine-status-dot ${statusClass}"></span>
+        <span class="spine-headband"></span>
         <span class="spine-title">${escapeHtml(book.title)}</span>
-        ${book.rating ? `<span class="spine-rating">${"★".repeat(Math.round(book.rating))}</span>` : ""}
+        <span class="spine-pages" aria-hidden="true"></span>
       `;
-      spine.addEventListener("click", () => openModal(book));
-      spinesWrap.appendChild(spine);
+            spine.addEventListener("click", () => openModal(book));
+            spinesWrap.appendChild(spine);
+        }
+
+        rowWrap.appendChild(spinesWrap);
+
+        const board = document.createElement("div");
+        board.className = "shelf-row-board";
+        rowWrap.appendChild(board);
+
+        frag.appendChild(rowWrap);
     }
 
-    rowWrap.appendChild(spinesWrap);
-
-    const board = document.createElement("div");
-    board.className = "shelf-row-board";
-    rowWrap.appendChild(board);
-
-    frag.appendChild(rowWrap);
-  }
-
-  els.shelfContainer.innerHTML = "";
-  els.shelfContainer.appendChild(frag);
+    els.shelfContainer.innerHTML = "";
+    els.shelfContainer.appendChild(frag);
 }
 
 function pluralizeBooks(n) {
-  const mod10 = n % 10;
-  const mod100 = n % 100;
-  let word = "книг";
-  if (mod10 === 1 && mod100 !== 11) word = "книга";
-  else if ([2,3,4].includes(mod10) && ![12,13,14].includes(mod100)) word = "книги";
-  return `${n} ${word}`;
+    const mod10 = n % 10;
+    const mod100 = n % 100;
+    let word = "книг";
+    if (mod10 === 1 && mod100 !== 11) word = "книга";
+    else if ([2, 3, 4].includes(mod10) && ![12, 13, 14].includes(mod100)) word = "книги";
+    return `${n} ${word}`;
 }
 
-//MODAL
 function openModal(book) {
-  els.modalGenre.textContent = book.genre;
-  els.modalTitle.textContent = book.title;
-  els.modalAuthor.textContent = book.author;
-  els.modalStatus.textContent = capitalize(book.status);
-  els.modalYear.textContent = book.year || "";
+    els.modalGenre.textContent = book.genre;
+    els.modalTitle.textContent = book.title;
+    els.modalAuthor.textContent = book.author;
+    els.modalStatus.textContent = capitalize(book.status);
+    els.modalYear.textContent = book.year || "";
 
-  els.modalRating.textContent = book.rating ? "★".repeat(Math.round(book.rating)) + "☆".repeat(5 - Math.round(book.rating)) : "";
+    els.modalRating.textContent = book.rating ? "★".repeat(Math.round(book.rating)) + "☆".repeat(5 - Math.round(book.rating)) : "";
 
-  const color = SPINE_COLORS[hashStr(book.title + book.author) % SPINE_COLORS.length];
-  els.modalCoverFallback.style.background = color;
-  els.modalCoverFallback.textContent = book.title;
+    const color = SPINE_COLORS[hashStr(book.title + book.author) % SPINE_COLORS.length];
+    els.modalCoverFallback.style.background = color;
+    els.modalCoverFallback.textContent = book.title;
 
-  if (book.cover) {
-    els.modalCover.src = book.cover;
-    els.modalCover.hidden = false;
-    els.modalCover.onerror = () => { els.modalCover.hidden = true; };
-    els.modalCoverFallback.style.display = "none";
-    els.modalCover.onload = () => { els.modalCoverFallback.style.display = "none"; };
-  } else {
-    els.modalCover.hidden = true;
-    els.modalCoverFallback.style.display = "flex";
-  }
+    if (book.cover) {
+        els.modalCover.src = book.cover;
+        els.modalCover.hidden = false;
+        els.modalCover.onerror = () => { els.modalCover.hidden = true; };
+        els.modalCoverFallback.style.display = "none";
+        els.modalCover.onload = () => { els.modalCoverFallback.style.display = "none"; };
+    } else {
+        els.modalCover.hidden = true;
+        els.modalCoverFallback.style.display = "flex";
+    }
 
-  els.modal.classList.add("open");
-  els.modal.setAttribute("aria-hidden", "false");
-  els.modalClose.focus();
+    els.modal.classList.add("open");
+    els.modal.setAttribute("aria-hidden", "false");
+    els.modalClose.focus();
 }
 
 function closeModal() {
-  els.modal.classList.remove("open");
-  els.modal.setAttribute("aria-hidden", "true");
+    els.modal.classList.remove("open");
+    els.modal.setAttribute("aria-hidden", "true");
 }
 
 function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
 function escapeHtml(s) {
-  return s.replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+    return s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
+
 function escapeAttr(s) { return escapeHtml(s); }
 
-// RANDOM 
 function pullRandomBook() {
-  const pool = FILTERED_BOOKS.length ? FILTERED_BOOKS : ALL_BOOKS;
-  if (!pool.length) return;
-  const book = pool[Math.floor(Math.random() * pool.length)];
+    const pool = FILTERED_BOOKS.length ? FILTERED_BOOKS : ALL_BOOKS;
+    if (!pool.length) return;
+    const book = pool[Math.floor(Math.random() * pool.length)];
 
-  const spineEl = document.querySelector(`.spine[data-id="${book.id}"]`);
-  if (spineEl) {
-    spineEl.scrollIntoView({ behavior: "smooth", block: "center" });
-    spineEl.classList.add("spine-picked");
-    spineEl.style.transform = "translateY(-26px) rotate(-2deg)";
-    setTimeout(() => { openModal(book); spineEl.style.transform = ""; }, 380);
-  } else {
-    openModal(book);
-  }
+    const spineEl = document.querySelector(`.spine[data-id="${book.id}"]`);
+    if (spineEl) {
+        spineEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        spineEl.classList.add("spine-picked");
+        spineEl.style.transform = "translateY(-26px) rotate(-2deg)";
+        setTimeout(() => {
+            openModal(book);
+            spineEl.style.transform = "";
+        }, 380);
+    } else {
+        openModal(book);
+    }
 }
 
-// EVENTS 
 els.searchInput.addEventListener("input", debounce(applyFiltersAndRender, 150));
 els.sortSelect.addEventListener("change", applyFiltersAndRender);
 els.genreSelect.addEventListener("change", applyFiltersAndRender);
@@ -370,9 +363,11 @@ els.modalBackdrop.addEventListener("click", closeModal);
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
 
 function debounce(fn, ms) {
-  let t;
-  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+    let t;
+    return (...args) => {
+        clearTimeout(t);
+        t = setTimeout(() => fn(...args), ms);
+    };
 }
 
-//INIT 
 loadBooks();

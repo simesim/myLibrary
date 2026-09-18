@@ -13,61 +13,61 @@
 
 <body>
 
-    <div class="grain" aria-hidden="true"></div>
+    <div class="dots" aria-hidden="true">
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+    </div>
 
     <header class="masthead">
         <div class="masthead-inner">
             <div class="masthead-top">
-                <span class="masthead-eyebrow">Бим бам бум бум</span>
+                <span class="masthead-eyebrow">Личный каталог · читано и перечитано</span>
                 <span class="masthead-count" id="bookCount">— книг</span>
             </div>
             <h1 class="masthead-title">Моя&nbsp;библиотека</h1>
-            <p class="masthead-sub">Полка, которую удобно взять с собой. Сортируй, фильтруй или вытяни наугад, когда не знаешь, что читать.</p>
+            <p class="masthead-sub">Полка, которую можно листать. Сортируй, фильтруй или вытяни наугад — как рукой по корешкам.</p>
         </div>
-        <div class="scallop" aria-hidden="true"></div>
     </header>
 
     <nav class="shelf-label" aria-label="Управление каталогом">
         <div class="shelf-label-inner">
+            <div class="controls-row">
+                <div class="control-group">
+                    <label class="control-tag" for="searchInput">Поиск</label>
+                    <input id="searchInput" class="control-input" type="text" placeholder="название или автор…">
+                </div>
 
-            <div class="control-group">
-                <label class="control-tag" for="searchInput">Поиск</label>
-                <input id="searchInput" class="control-input" type="text" placeholder="название или автор…">
+                <div class="control-group">
+                    <label class="control-tag" for="sortSelect">Сортировка</label>
+                    <select id="sortSelect" class="control-input">
+          <option value="title-asc">Название А→Я</option>
+          <option value="author-asc">Автор А→Я</option>
+          <option value="rating-desc">Рейтинг ↓</option>
+          <option value="rating-asc">Рейтинг ↑</option>
+          <option value="year-desc">Год ↓</option>
+          <option value="year-asc">Год ↑</option>
+        </select>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-tag" for="genreSelect">Жанр</label>
+                    <select id="genreSelect" class="control-input">
+          <option value="all">Все жанры</option>
+        </select>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-tag" for="statusSelect">Статус</label>
+                    <select id="statusSelect" class="control-input">
+          <option value="all">Любой статус</option>
+          <option value="прочитано">Прочитано</option>
+          <option value="в процессе">В процессе</option>
+          <option value="хочу прочитать">Хочу прочитать</option>
+        </select>
+                </div>
             </div>
 
-            <div class="control-group">
-                <label class="control-tag" for="sortSelect">Сортировка</label>
-                <select id="sortSelect" class="control-input">
-        <option value="title-asc">Название А→Я</option>
-        <option value="author-asc">Автор А→Я</option>
-        <option value="rating-desc">Рейтинг ↓</option>
-        <option value="rating-asc">Рейтинг ↑</option>
-        <option value="year-desc">Год ↓</option>
-        <option value="year-asc">Год ↑</option>
-      </select>
-            </div>
-
-            <div class="control-group">
-                <label class="control-tag" for="genreSelect">Жанр</label>
-                <select id="genreSelect" class="control-input">
-        <option value="all">Все жанры</option>
-      </select>
-            </div>
-
-            <div class="control-group">
-                <label class="control-tag" for="statusSelect">Статус</label>
-                <select id="statusSelect" class="control-input">
-        <option value="all">Любой статус</option>
-        <option value="прочитано">Прочитано</option>
-        <option value="в процессе">В процессе</option>
-        <option value="хочу прочитать">Хочу прочитать</option>
-      </select>
-            </div>
-
-            <button id="randomBtn" class="random-btn">
-      <span>Наугад с полки</span>
-    </button>
-
+            <button id="randomBtn" class="random-btn">Наугад с полки</button>
         </div>
     </nav>
 
