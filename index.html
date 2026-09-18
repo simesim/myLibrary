@@ -1,40 +1,43 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Моя библиотека</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя библиотека</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;0,9..144,800;1,9..144,500;1,9..144,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div class="grain"></div>
+    <div class="grain" aria-hidden="true"></div>
 
-<header class="masthead">
-  <div class="masthead-inner">
-    <div class="masthead-top">
-      <span class="masthead-eyebrow">Личный каталог · читано и перечитано</span>
-      <span class="masthead-count" id="bookCount">— книг</span>
-    </div>
-    <h1 class="masthead-title">Моя&nbsp;библиотека</h1>
-    <p class="masthead-sub">Полка, которую можно листать. Сортируй, фильтруй или вытяни наугад — как рукой по корешкам.</p>
-  </div>
-</header>
+    <header class="masthead">
+        <div class="masthead-inner">
+            <div class="masthead-top">
+                <span class="masthead-eyebrow">Личный каталог · читано и перечитано</span>
+                <span class="masthead-count" id="bookCount">— книг</span>
+            </div>
+            <h1 class="masthead-title">Моя&nbsp;библиотека</h1>
+            <p class="masthead-sub">Полка, которую можно листать. Сортируй, фильтруй или вытяни наугад — как рукой по корешкам.</p>
+        </div>
+        <div class="scallop" aria-hidden="true"></div>
+    </header>
 
-<nav class="shelf-label" aria-label="Управление каталогом">
-  <div class="shelf-label-inner">
+    <nav class="shelf-label" aria-label="Управление каталогом">
+        <div class="shelf-label-inner">
 
-    <div class="control-group">
-      <label class="control-tag" for="searchInput">Поиск</label>
-      <input id="searchInput" class="control-input" type="text" placeholder="название или автор…">
-    </div>
+            <div class="control-group">
+                <label class="control-tag" for="searchInput">Поиск</label>
+                <input id="searchInput" class="control-input" type="text" placeholder="название или автор…">
+            </div>
 
-    <div class="control-group">
-      <label class="control-tag" for="sortSelect">Сортировка</label>
-      <select id="sortSelect" class="control-input">
+            <div class="control-group">
+                <label class="control-tag" for="sortSelect">Сортировка</label>
+                <select id="sortSelect" class="control-input">
         <option value="title-asc">Название А→Я</option>
         <option value="author-asc">Автор А→Я</option>
         <option value="rating-desc">Рейтинг ↓</option>
@@ -42,76 +45,76 @@
         <option value="year-desc">Год ↓</option>
         <option value="year-asc">Год ↑</option>
       </select>
-    </div>
+            </div>
 
-    <div class="control-group">
-      <label class="control-tag" for="genreSelect">Жанр</label>
-      <select id="genreSelect" class="control-input">
+            <div class="control-group">
+                <label class="control-tag" for="genreSelect">Жанр</label>
+                <select id="genreSelect" class="control-input">
         <option value="all">Все жанры</option>
       </select>
-    </div>
+            </div>
 
-    <div class="control-group">
-      <label class="control-tag" for="statusSelect">Статус</label>
-      <select id="statusSelect" class="control-input">
+            <div class="control-group">
+                <label class="control-tag" for="statusSelect">Статус</label>
+                <select id="statusSelect" class="control-input">
         <option value="all">Любой статус</option>
         <option value="прочитано">Прочитано</option>
         <option value="в процессе">В процессе</option>
         <option value="хочу прочитать">Хочу прочитать</option>
       </select>
-    </div>
+            </div>
 
-    <button id="randomBtn" class="random-btn">
-      <span class="random-btn-icon">☘</span>
+            <button id="randomBtn" class="random-btn">
       <span>Наугад с полки</span>
     </button>
 
-  </div>
-</nav>
+        </div>
+    </nav>
 
-<main id="shelfContainer" class="shelf-container">
-  <div class="loading-state" id="loadingState">
-    <div class="loading-spine"></div>
-    <p>Расставляю книги по полке…</p>
-  </div>
-</main>
+    <main id="shelfContainer" class="shelf-container">
+        <div class="loading-state" id="loadingState">
+            <div class="loading-spine"></div>
+            <p>Расставляю книги по полке…</p>
+        </div>
+    </main>
 
-<div class="book-modal" id="bookModal" aria-hidden="true">
-  <div class="book-modal-backdrop" id="modalBackdrop"></div>
-  <div class="book-modal-card" id="modalCard" role="dialog" aria-modal="true">
-    <button class="modal-close" id="modalClose" aria-label="Закрыть">✕</button>
-    <div class="modal-cover-wrap">
-      <img id="modalCover" class="modal-cover" alt="">
-      <div class="modal-cover-fallback" id="modalCoverFallback"></div>
+    <div class="book-modal" id="bookModal" aria-hidden="true">
+        <div class="book-modal-backdrop" id="modalBackdrop"></div>
+        <div class="book-modal-card" id="modalCard" role="dialog" aria-modal="true">
+            <button class="modal-close" id="modalClose" aria-label="Закрыть">Закрыть</button>
+            <div class="modal-cover-wrap">
+                <img id="modalCover" class="modal-cover" alt="">
+                <div class="modal-cover-fallback" id="modalCoverFallback"></div>
+            </div>
+            <div class="modal-info">
+                <span class="modal-genre" id="modalGenre"></span>
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <p class="modal-author" id="modalAuthor"></p>
+                <div class="modal-meta">
+                    <span class="modal-status" id="modalStatus"></span>
+                    <span class="modal-year" id="modalYear"></span>
+                </div>
+                <div class="modal-rating" id="modalRating"></div>
+            </div>
+        </div>
     </div>
-    <div class="modal-info">
-      <span class="modal-genre" id="modalGenre"></span>
-      <h2 class="modal-title" id="modalTitle"></h2>
-      <p class="modal-author" id="modalAuthor"></p>
-      <div class="modal-meta">
-        <span class="modal-status" id="modalStatus"></span>
-        <span class="modal-year" id="modalYear"></span>
-      </div>
-      <div class="modal-rating" id="modalRating"></div>
+
+    <div class="empty-state" id="emptyState" hidden>
+        <p>На этой полке пока пусто.</p>
+        <p class="empty-state-sub">Попробуй изменить фильтры или поиск.</p>
     </div>
-  </div>
-</div>
 
-<div class="empty-state" id="emptyState" hidden>
-  <p>На этой полке пока пусто.</p>
-  <p class="empty-state-sub">Попробуй изменить фильтры или поиск.</p>
-</div>
+    <div class="error-state" id="errorState" hidden>
+        <p>Не получилось дотянуться до таблицы.</p>
+        <p class="error-state-sub" id="errorDetail">Проверь ссылку на CSV в <code>config.js</code> и доступ "Любой пользователь с ссылкой".</p>
+    </div>
 
-<div class="error-state" id="errorState" hidden>
-  <p>Не получилось дотянуться до таблицы.</p>
-  <p class="error-state-sub" id="errorDetail">Проверь ссылку на CSV в <code>config.js</code> и доступ "Любой пользователь с ссылкой".</p>
-</div>
+    <footer class="site-footer">
+        <p>Полка обновляется из Google Таблицы · последняя загрузка: <span id="lastSync">—</span></p>
+    </footer>
 
-<footer class="site-footer">
-  <p>Полка обновляется из Google Таблицы · последняя загрузка: <span id="lastSync">—</span></p>
-</footer>
-
-<script src="config.js"></script>
-<script src="app.js"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
 </body>
-</html>
+
+</html>А
